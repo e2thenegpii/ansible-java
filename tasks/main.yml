@@ -1,0 +1,60 @@
+---
+- name : (Ubuntu) add webupd8team/java ppa
+  when: ansible_distribution == "Ubuntu"
+  environment: proxy_env
+  apt_repository: repo='ppa:webupd8team/java'
+
+- name : (Ubuntu) accept license...
+  when: ansible_distribution == "Ubuntu"
+  shell: 'echo debconf shared/accepted-oracle-license-v1-1 {{item}} true | debconf-set-selections'
+  with_items :
+    - select
+    - seen
+
+- name : (Ubuntu) install java6, java7, java8 set 7 as default
+  when: ansible_distribution == "Ubuntu"
+  environment: proxy_env
+  apt: name={{ item }}
+  with_items:
+    - oracle-java6-installer
+    - oracle-java7-installer
+    - oracle-java8-installer
+
+- name : (Ubuntu) set java7 as the default
+  when: ansible_distribution == "Ubuntu"
+  apt: name=oracle-java7-set-default
+
+- name: (Fedora, RedHat) install java...
+  when: ansible_distribution == "Fedora" or ansible_distribution == "RedHat"
+  yum: name={{ item }}
+  with_items:
+    - java-1.8.0-openjdk
+    - java-1.8.0-openjdk-devel
+    - java-1.8.0-openjdk-javadoc
+  
+- name : (Ubuntu) install maven and ant
+  when: ansible_distribution == "Ubuntu"
+  environment: proxy_env
+  apt: name={{ item }}
+  with_items:
+    - maven
+    - ant
+
+- name : (Fedora, RedHat) install maven and ant
+  when: ansible_distribution == "Fedora" or ansible_distribution == "RedHat"
+  environment: proxy_env
+  yum: name={{ item }}
+  with_items:
+    - maven
+    - ant
+
+- name : (Ubuntu) proxify maven
+  when: ansible_distribution == "Ubuntu" and proxy_env.http_proxy is defined
+  template: dest=/usr/share/maven/conf/settings.xml src=usr/share/maven/conf/settings.xml.j2
+
+- name : (Fedora, RedHat) proxify maven
+  when: (ansible_distribution == "Fedora" or ansible_distribution == "RedHat") and proxy_env.http_proxy is defined
+  template: dest=/etc/maven/settings.xml src=usr/share/maven/conf/settings.xml.j2
+
+- name: set JAVA_HOME...
+  copy: src='etc/profile.d/java.sh' dest='/etc/profile.d/java.sh' mode=644
