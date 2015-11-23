@@ -1,0 +1,19 @@
+---
+- name: (RedHat) install java...
+  yum: name={{ item }}
+  with_items:
+    - java-1.8.0-openjdk
+    - java-1.8.0-openjdk-devel
+    - java-1.8.0-openjdk-javadoc
+  
+- name : (RedHat) install maven and ant
+  environment: proxy_env
+  yum: name={{ item }}
+  with_items:
+    - maven
+    - ant
+
+- name : (RedHat) proxify maven
+  when: proxy_env.http_proxy is defined
+  template: dest=/etc/maven/settings.xml src=usr/share/maven/conf/settings.xml.j2
+

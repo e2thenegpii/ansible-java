@@ -1,0 +1,30 @@
+---
+- name : (Debian) add webupd8team/java ppa
+  apt_repository: repo='ppa:webupd8team/java'
+
+- name : (Debian) accept license...
+  shell: 'echo debconf shared/accepted-oracle-license-v1-1 {{item}} true | debconf-set-selections'
+  with_items :
+    - select
+    - seen
+
+- name : (Debian) install java6, java7, java8
+  apt: name={{ item }}
+  with_items:
+    - oracle-java6-installer
+    - oracle-java7-installer
+    - oracle-java8-installer
+
+- name : (Debian) set java8 as the default
+  apt: name=oracle-java8-set-default
+
+- name : (Debian) install maven and ant
+  apt: name={{ item }}
+  with_items:
+    - maven
+    - ant
+
+- name : (Debian) proxify maven
+  when: proxy_env.http_proxy is defined
+  template: dest=/usr/share/maven/conf/settings.xml src=usr/share/maven/conf/settings.xml.j2
+
