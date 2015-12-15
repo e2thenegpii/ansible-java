@@ -18,13 +18,3 @@
 - name : (Debian) set java8 as the default
   apt: name=oracle-java8-set-default
 
-- name : (Debian) install maven and ant
-  apt: name={{ item }}
-  with_items:
-    - maven
-    - ant
-
-- name : (Debian) proxify maven
-  when: proxy_env.http_proxy is defined
-  template: dest=/usr/share/maven/conf/settings.xml src=usr/share/maven/conf/settings.xml.j2
-
