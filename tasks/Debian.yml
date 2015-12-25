@@ -8,13 +8,11 @@
     - select
     - seen
 
-- name : (Debian) install java6, java7, java8
+- name : (Debian) install java
   apt: name={{ item }}
   with_items:
-    - oracle-java6-installer
-    - oracle-java7-installer
-    - oracle-java8-installer
+    - oracle-java{{java_ver}}-installer
 
-- name : (Debian) set java8 as the default
-  apt: name=oracle-java8-set-default
+- name : (Debian) set default
+  apt: name=oracle-java{{java_ver}}-set-default
 

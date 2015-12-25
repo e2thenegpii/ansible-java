@@ -8,4 +8,9 @@
   include: RedHat.yml
   
 - name: set JAVA_HOME...
-  copy: src='etc/profile.d/java.sh' dest='/etc/profile.d/java.sh' mode=644
+  template: >
+    src='etc/profile.d/java.sh.j2'
+    dest='/etc/profile.d/java.sh'
+    mode=644
+    owner=root
+    group=root
