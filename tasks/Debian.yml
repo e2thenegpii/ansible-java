@@ -9,10 +9,10 @@
     - seen
 
 - name : (Debian) install java
-  apt: name={{ item }}
+  package: name={{item}} state=latest
   with_items:
     - oracle-java{{java_ver}}-installer
 
 - name : (Debian) set default
-  apt: name=oracle-java{{java_ver}}-set-default
+  package: name=oracle-java{{java_ver}}-set-default
 
