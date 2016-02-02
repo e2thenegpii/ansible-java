@@ -1,3 +1,4 @@
+{% if proxy_env is defined %}
 {% if proxy_env.http_proxy is defined %}
 export JAVA_OPTS="$JAVA_OPTS -Dhttp.proxyHost={{http_proxy_hostname}} -Dhttp.proxyPort={{http_proxy_port}}"
 {% endif %}
@@ -6,4 +7,5 @@ export JAVA_OPTS="$JAVA_OPTS -Dhttps.proxyHost={{https_proxy_hostname}} -Dhttps.
 {% endif %}
 {% if proxy_env.no_proxy is defined %}
 export JAVA_OPTS="$JAVA_OPTS -DnoProxyHosts={{proxy_env.no_proxy}}"
+{% endif %}
 {% endif %}
