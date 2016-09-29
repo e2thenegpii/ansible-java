@@ -1,15 +1,12 @@
 ---
-- name: (Debian) install...
-  become: yes
-  become_user: root
-  when: ansible_os_family == 'Debian'
-  include: Debian.yml
+- name: resolve platform specific vars
+  include_vars: "{{item}}"
+  with_first_found:
+    - "{{ansible_distribution}}-{{ansible_distribution_release}}.yml"
+    - "{{ansible_distribution}}.yml"
+    - "{{ansible_os_family}}.yml"
 
-- name: (RedHat) install...
-  become: yes
-  become_user: root
-  when: ansible_os_family == 'RedHat'
-  include: RedHat.yml
+- include: '{{java_jdk_type}}.yml'
   
 - name: set JAVA_HOME...
   become: yes
@@ -20,5 +17,3 @@
     src={{item}}.j2
     dest=/{{item}}
     mode=0644
-    owner=root
-    group=root

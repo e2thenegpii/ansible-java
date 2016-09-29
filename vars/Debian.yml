@@ -1,0 +1,3 @@
+---
+java_openjdk_pkg:
+  - openjdk-{{java_ver}}-{{java_jdk_or_jre}}

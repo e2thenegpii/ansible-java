@@ -1,0 +1,6 @@
+---
+- name: install packges
+  become: yes
+  become_user: root
+  with_items: '{{java_openjdk_pkg}}'
+  package: name={{item}} state=present
