@@ -9,5 +9,7 @@ export JAVA_OPTS="$JAVA_OPTS -Dhttps.proxyHost={{https_proxy_hostname}} -Dhttps.
 export JAVA_OPTS="$JAVA_OPTS -DnoProxyHosts={{proxy_env.no_proxy}}"
 {% endif %}
 {% endif %}
-export JAVA_HOME=/etc/alternatives/java_sdk
-export JRE_HOME=/etc/alternatives/jre
+export JAVA_HOME={{java_home}}
+{% if java_jdk_or_jre == "jre" %}
+export JRE_HOME={{java_home}}
+{% endif %}

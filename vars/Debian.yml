@@ -1,3 +1,5 @@
 ---
 java_openjdk_pkg:
   - openjdk-{{java_ver}}-{{java_jdk_or_jre}}
+
+java_home: '/usr/lib/jvm/java-{{java_ver}}-{% if java_jdk_type == "oracle" %}oracle{% else %}openjdk-amd64{% endif %}'
