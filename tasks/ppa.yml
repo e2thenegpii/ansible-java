@@ -8,6 +8,9 @@
     - select
     - seen
 
+- name : (Debian) update apt
+  apt : update_cache=yes
+
 - name : (Debian) install java
   package: name={{item}} state=present
   with_items:
